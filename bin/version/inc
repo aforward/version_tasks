@@ -1,0 +1,10 @@
+#!/bin/bash
+
+MODE=${1-patch}
+
+CURRENT_VERSION=$(./bin/version/current)
+NEXT_VERSION=$(./bin/version/next $MODE)
+
+echo "Updating mix.exs from ${CURRENT_VERSION} to ${NEXT_VERSION}"
+sed -i '' "s/@version \"$CURRENT_VERSION\"/@version \"$NEXT_VERSION\"/g" mix.exs
+sed -i '' "s/: \"~> $CURRENT_VERSION\"/: \"~> $NEXT_VERSION\"/g" README.md

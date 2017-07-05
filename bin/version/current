@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cat mix.exs | grep \@version | grep \" | awk -F'"' '{print $2}'

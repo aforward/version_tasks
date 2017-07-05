@@ -1,0 +1,33 @@
+#!/bin/bash
+
+MODE=${1-patch}
+
+OLD_VERSION=$(./bin/version/current)
+MAJOR_NUM=$(echo "$OLD_VERSION" | awk -F'.' '{print $1}')
+MINOR_NUM=$(echo "$OLD_VERSION" | awk -F'.' '{print $2}')
+PATCH_NUM=$(echo "$OLD_VERSION" | awk -F'.' '{print $3}')
+
+case "$MODE" in
+
+  "major")
+    MAJOR_NUM=$(($MAJOR_NUM + 1))
+    MINOR_NUM=0
+    PATCH_NUM=0
+    ;;
+
+  "minor")
+    MINOR_NUM=$(($MINOR_NUM + 1))
+    PATCH_NUM=0
+    ;;
+
+  "patch")
+    PATCH_NUM=$(($PATCH_NUM + 1))
+    ;;
+
+  *)
+    echo "Unknown mode ($MODE) provided, expected major, minor, or patch (default)"
+    exit 0
+    ;;
+esac
+
+echo "${MAJOR_NUM}.${MINOR_NUM}.${PATCH_NUM}"

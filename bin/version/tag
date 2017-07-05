@@ -1,0 +1,7 @@
+#!/bin/bash
+
+NEW_VERSION=$(./bin/version/current)
+
+git tag "v${NEW_VERSION}" && \
+ git push && \
+ git push --tag
