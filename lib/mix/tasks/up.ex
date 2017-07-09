@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.Version.Next do
+defmodule Mix.Tasks.Version.Up do
   use Mix.Task
 
   @shortdoc "Update your project to the next version, and commit the new files, provide major, minor or patch as input"
