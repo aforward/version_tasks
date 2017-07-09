@@ -13,7 +13,7 @@ defmodule VersionTasks.Mixfile do
 
   @package [
     name: @app,
-    files: ["lib", "mix.exs", "README*", "README*", "LICENSE*"],
+    files: ["lib", "mix.exs", "README*", "README*", "LICENSE*", "bin"],
     maintainers: ["Andrew Forward"],
     licenses: ["MIT"],
     links: %{"GitHub" => @git_url}

@@ -116,11 +116,21 @@ defmodule VersionTasks do
   """
   def run(script) do
     script
+    |> clean
     |> String.to_char_list
     |> :os.cmd
     |> List.to_string
     |> String.trim
     |> IO.puts
+  end
+
+  def clean(script) do
+    [filename | args] = script |> String.split
+    if File.exists?(filename) do
+      script
+    else
+      ["./deps/version_tasks/#{script}" | args] |> Enum.join(" ")
+    end
   end
 
 end
