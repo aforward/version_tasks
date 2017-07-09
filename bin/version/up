@@ -11,5 +11,5 @@ if [ "${NEW_VERSION}" != "${NEXT_VERSION}" ]; then
   exit 1
 fi
 
-(git add . && \
+(git add mix.exs README.md && \
  git commit -m "v${NEW_VERSION}")
