@@ -14,7 +14,7 @@ versionning](http://semver.org/), [Spec-ulation from Rich Hickey](https://www.yo
 
 ```elixir
 @deps [
-  version_tasks: "~> 0.3.2"
+  version_tasks: "~> 0.3.3"
 ]
 ```
 
