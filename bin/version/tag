@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NEW_VERSION=$(./bin/version/current)
+NEW_VERSION=$(MIX_QUIET=1 mix version.current)
 
 git tag "v${NEW_VERSION}" && \
  git push && \

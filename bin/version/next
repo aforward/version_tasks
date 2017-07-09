@@ -2,7 +2,7 @@
 
 MODE=${1-patch}
 
-OLD_VERSION=$(./bin/version/current)
+OLD_VERSION=$(MIX_QUIET=1 mix version.current)
 MAJOR_NUM=$(echo "$OLD_VERSION" | awk -F'.' '{print $1}')
 MINOR_NUM=$(echo "$OLD_VERSION" | awk -F'.' '{print $2}')
 PATCH_NUM=$(echo "$OLD_VERSION" | awk -F'.' '{print $3}')

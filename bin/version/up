@@ -2,9 +2,9 @@
 
 MODE=${1-patch}
 
-NEXT_VERSION=$(./bin/version/next $MODE)
-./bin/version/inc $MODE
-NEW_VERSION=$(./bin/version/current)
+NEXT_VERSION=$(MIX_QUIET=1 mix version.next $MODE)
+MIX_QUIET=1 mix version.inc $MODE
+NEW_VERSION=$(MIX_QUIET=1 mix version.current)
 
 if [ "${NEW_VERSION}" != "${NEXT_VERSION}" ]; then
   echo "Unable to update version, stopping script"
