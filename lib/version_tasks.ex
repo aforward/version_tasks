@@ -100,7 +100,14 @@ defmodule VersionTasks do
 
   Here's a script to upgrade your package on hex
 
-      mix do version.up, version.tag, compile, hex.publish
+      mix do version.up <major|minor|patch>, version.tag && \
+        mix test && \
+        mix hex.publish
+
+  I usually drop this in a `./bin/hexup` bash script in my project,
+  as `mix test` needs the `MIX_ENV=test`, and you cannot combine
+  updating the version number with `hex.publish` as it won't pick
+  up the new version you just created.
   """
 
   @doc"""
