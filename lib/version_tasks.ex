@@ -100,7 +100,7 @@ defmodule VersionTasks do
 
   Here's a script to upgrade your package on hex
 
-      mix do version.up, version.tag, test, hext.publish
+      mix do version.up, version.tag, compile, hex.publish
   """
 
   @doc"""

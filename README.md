@@ -119,7 +119,9 @@ can do this from the command line with
 
 Here's a script to upgrade your package on hex
 
-    mix do version.up, version.tag, test, hext.publish
+    mix do version.up, version.tag, compile, hex.publish
+
+Note that the version.up will change the version
 
 ## License
 
