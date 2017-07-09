@@ -1,8 +1,4 @@
 #!/bin/bash
 
 MODE=${1-patch}
-
-./bin/version/up $MODE && \
-  ./bin/version/tag && \
-  mix test && \
-  mix hex.publish
+mix do version.up $MODE, version.tag, hex.publish
