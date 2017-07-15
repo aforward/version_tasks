@@ -117,6 +117,7 @@ defmodule VersionTasks do
   the results to the screen.
   """
   def run(script) do
+    Application.put_env(:porcelain, :driver, Porcelain.Driver.Basic)
     {:ok, _started} = Application.ensure_all_started(:porcelain)
     script
     |> clean
