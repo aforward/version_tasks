@@ -1,5 +1,7 @@
 defmodule VersionTasks do
 
+  use FnExpr
+
   @moduledoc"""
   A set of Mix Tasks for managing your version numbers
 
@@ -115,13 +117,10 @@ defmodule VersionTasks do
   the results to the screen.
   """
   def run(script) do
+    {:ok, _started} = Application.ensure_all_started(:porcelain)
     script
     |> clean
-    |> String.to_char_list
-    |> :os.cmd
-    |> List.to_string
-    |> String.trim
-    |> IO.puts
+    |> Porcelain.shell(out: IO.stream(:stdio, :line))
   end
 
   def clean(script) do
