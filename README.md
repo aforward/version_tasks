@@ -14,7 +14,7 @@ versionning](http://semver.org/), [Spec-ulation from Rich Hickey](https://www.yo
 
 ```elixir
 @deps [
-  {:version_tasks, "~> 0.8.0"}
+  {:version_tasks, "~> 0.8.1"}
 ]
 ```
 
@@ -89,7 +89,7 @@ alternative to mix new.  [A video explaining mix gen and mix template](https://p
 And your `README.md` SHOULD HAVE an installation section as follows:
 
       @deps [
-        {:your_app_name, "~> 0.8.0"}  # <-- that's the important line to have
+        {:your_app_name, "~> 0.8.1"}  # <-- that's the important line to have
       ]
 
 ### Git Interaction Tasks
