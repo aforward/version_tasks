@@ -120,17 +120,7 @@ defmodule VersionTasks do
     Application.put_env(:porcelain, :driver, Porcelain.Driver.Basic)
     {:ok, _started} = Application.ensure_all_started(:porcelain)
     script
-    |> clean
     |> Porcelain.shell(out: IO.stream(:stdio, :line))
-  end
-
-  def clean(script) do
-    [filename | args] = script |> String.split
-    if File.exists?(filename) do
-      script
-    else
-      ["./deps/version_tasks/#{script}" | args] |> Enum.join(" ")
-    end
   end
 
 end
