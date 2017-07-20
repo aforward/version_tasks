@@ -3,12 +3,18 @@ defmodule Mix.Tasks.Version.Next do
   use FnExpr
 
   @shortdoc "The next version of your project, provide major, minor or patch as input"
-  def run([]), do: run(["patch"])
-  def run([mode]) do
+  def run(args) do
+    args
+    |> calc
+    |> IO.puts
+  end
+
+  @shortdoc "Calculate the next version of your project, provide major, minor or patch as input"
+  def calc([]), do: calc(["patch"])
+  def calc([mode]) do
     Mix.Project.config[:version]
     |> String.split(".")
     |> uptick(mode)
-    |> IO.puts
   end
 
   def uptick([major, minor, patch], "patch") do
