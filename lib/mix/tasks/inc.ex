@@ -12,6 +12,7 @@ defmodule Mix.Tasks.Version.Inc do
 
     update_file("mix.exs", current, next, &update_mix_version/3)
     update_file("README.md", current, next, &update_readme_version/3)
+    next
   end
 
 
