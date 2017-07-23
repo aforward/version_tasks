@@ -1,17 +1,18 @@
 defmodule Mix.Tasks.Version.Tag do
   use Mix.Task
 
-  @shortdoc "Tag your project with the current version"
-  def run(_) do
-    shell("git tag \"v#{Mix.Project.config[:version]}\"")
-    shell("git push")
-    shell("git push --tag")
-  end
+  alias Mix.Tasks.Version
 
-  def shell(script) do
-    Application.put_env(:porcelain, :driver, Porcelain.Driver.Basic)
-    {:ok, _started} = Application.ensure_all_started(:porcelain)
-    Porcelain.shell(script, out: IO.stream(:stdio, :line))
+  @shortdoc "Tag your project with the current version"
+  def run(args) do
+    current_version = Version.Current.calc(args)
+    repo = Git.new "."
+    {:ok, _} = Git.tag repo, ["v#{current_version}"]
+    {:ok, output} = Git.push repo
+    IO.puts output
+    {:ok, output} = Git.push repo, ["--tag"]
+    IO.puts output
+    current_version
   end
 
 end
