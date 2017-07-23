@@ -10,6 +10,7 @@ if [ \"\$VERSION\" != \"\" ]; then
   echo \"=================\"
   echo \"HEX PUBLISH \$VERSION\"
   echo \"=================\"
+  mix version.tag
   mix hex.publish
 else
   echo \"Continue making the app awesome.\"
