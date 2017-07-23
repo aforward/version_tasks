@@ -128,6 +128,25 @@ as `mix test` needs the `MIX_ENV=test`, and you cannot combine
 updating the version number with `hex.publish` as it won't pick
 up the new version you just created.
 
+### Auto publish to Hex.
+
+You can configure an automatic push to hex, but to do that you
+cannot have a passphrase associated with your key.
+
+    mix hex.user passphrase
+
+And then you install a git hook which will install a post-commit
+hook
+
+    mix githooks.hexup
+
+If you want to keep your passphrase, then it will be stored in plaintext
+inside your .git/hooks directory, simply call
+
+    mix githooks.hexup <passphrase>
+
+Your passphrase should be different then your hex.pm password.
+
 ## License
 
 MIT License
