@@ -14,4 +14,3 @@ use Mix.Config
 # Example per-environment config:
 #
 #     import_config("#{Mix.env}.exs")
-config :porcelain, driver: Porcelain.Driver.Basic

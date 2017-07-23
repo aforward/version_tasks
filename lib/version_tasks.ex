@@ -1,7 +1,5 @@
 defmodule VersionTasks do
 
-  use FnExpr
-
   @moduledoc"""
   A set of Mix Tasks for managing your version numbers
 
@@ -102,25 +100,28 @@ defmodule VersionTasks do
 
   Here's a script to upgrade your package on hex
 
-      mix do version.up <major|minor|patch>, version.tag && \
-        mix test && \
+      mix version.up <major|minor|patch> && \\
+        version.tag, && \\
+        mix test && \\
         mix hex.publish
 
   I usually drop this in a `./bin/hexup` bash script in my project,
   as `mix test` needs the `MIX_ENV=test`, and you cannot combine
   updating the version number with `hex.publish` as it won't pick
   up the new version you just created.
-  """
 
-  @doc"""
-  Run a script using erlangs underlying `:os.cmd` and output
-  the results to the screen.
+  ## Auto publish to Hex.
+
+  You can configure an automatic push to hex, but to do that you
+  cannot have a passphrase associated with your key.
+
+      mix hex.user passphrase
+
+  And then you install a git hook which will install a post-commit
+  hook
+
+      mix githooks.hexup
+
   """
-  def run(script) do
-    Application.put_env(:porcelain, :driver, Porcelain.Driver.Basic)
-    {:ok, _started} = Application.ensure_all_started(:porcelain)
-    script
-    |> Porcelain.shell(out: IO.stream(:stdio, :line))
-  end
 
 end

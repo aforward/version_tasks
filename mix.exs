@@ -9,14 +9,13 @@ defmodule VersionTasks.Mixfile do
   @deps [
     {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
     {:fn_expr, "~> 0.1"},
-    {:porcelain, "~> 2.0"},
     {:git_cli, "~> 0.2"},
     {:ex_doc,  "0.16.1", only: [ :dev, :test ]},
   ]
 
   @package [
     name: @app,
-    files: ["lib", "mix.exs", "README*", "README*", "LICENSE*", "bin"],
+    files: ["lib", "mix.exs", "README*", "README*", "LICENSE*"],
     maintainers: ["Andrew Forward"],
     licenses: ["MIT"],
     links: %{"GitHub" => @git_url}
