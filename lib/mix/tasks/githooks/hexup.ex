@@ -2,7 +2,8 @@ defmodule Mix.Tasks.Githooks.Hexup do
   use Mix.Task
 
   @shortdoc "Install a githook to run mix hex.publish on a new release"
-  def run(_) do
+  def run([]), do: run([""])
+  def run([passphrase]) do
     filename = ".git/hooks/post-commit"
     content = """
 #!/bin/bash
@@ -14,7 +15,8 @@ if [ "$VERSION" != "" ]; then
   echo "================="
   mix version.tag
   mix hex.publish <<EOF
-y
+#{passphrase}
+Y
 EOF
 else
   echo "Continue making the app awesome."

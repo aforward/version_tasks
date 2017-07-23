@@ -122,6 +122,13 @@ defmodule VersionTasks do
 
       mix githooks.hexup
 
+  If you want to keep your passphrase, then it will be stored in plaintext
+  inside your .git/hooks directory, simply call
+
+      mix githooks.hexup <passphrase>
+
+  Your passphrase should be different then your hex.pm password.
+
   """
 
 end
