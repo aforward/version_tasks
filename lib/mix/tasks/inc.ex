@@ -1,6 +1,6 @@
 defmodule Mix.Tasks.Version.Inc do
   use Mix.Task
-  use FnExpr
+  use VersionTasks.FnExpr
   alias Mix.Tasks.Version
 
   @shortdoc "Increment to the next version of your project, provide major, minor or patch as input"

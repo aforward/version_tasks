@@ -1,6 +1,6 @@
 defmodule Mix.Tasks.Version.Current do
   use Mix.Task
-  use FnExpr
+  use VersionTasks.FnExpr
 
   @shortdoc "The current version of your project"
   def run(args) do

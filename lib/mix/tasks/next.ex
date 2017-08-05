@@ -1,6 +1,6 @@
 defmodule Mix.Tasks.Version.Next do
   use Mix.Task
-  use FnExpr
+  use VersionTasks.FnExpr
 
   @shortdoc "The next version of your project, provide major, minor or patch as input"
   def run(args) do
