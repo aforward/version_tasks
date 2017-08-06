@@ -3,7 +3,7 @@ defmodule Mix.Tasks.Version.Up do
 
   alias Mix.Tasks.Version
 
-  @shortdoc "Update your project to the next version, and commit the new files, provide major, minor or patch as input"
+  @shortdoc "Inc to next version, and commit changes to git"
   def run(mode) do
     next_version = Version.Inc.run(mode)
     updated_version = Version.Current.calc(mode)

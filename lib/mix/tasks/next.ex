@@ -2,14 +2,13 @@ defmodule Mix.Tasks.Version.Next do
   use Mix.Task
   use VersionTasks.FnExpr
 
-  @shortdoc "The next version of your project, provide major, minor or patch as input"
+  @shortdoc "The next version (e.g v0.9.2)"
   def run(args) do
     args
     |> calc
     |> IO.puts
   end
 
-  @shortdoc "Calculate the next version of your project, provide major, minor or patch as input"
   def calc([]), do: calc(["patch"])
   def calc([mode]) do
     Mix.Project.config[:version]

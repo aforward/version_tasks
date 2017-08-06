@@ -2,7 +2,7 @@ defmodule Mix.Tasks.Version.Current do
   use Mix.Task
   use VersionTasks.FnExpr
 
-  @shortdoc "The current version of your project"
+  @shortdoc "The current version of your project (e.g v0.9.1)"
   def run(args) do
     args
     |> calc

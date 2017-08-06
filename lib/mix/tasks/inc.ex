@@ -3,7 +3,7 @@ defmodule Mix.Tasks.Version.Inc do
   use VersionTasks.FnExpr
   alias Mix.Tasks.Version
 
-  @shortdoc "Increment to the next version of your project, provide major, minor or patch as input"
+  @shortdoc "Inc to the next (major|minor|patch) version of your project"
   def run(mode) do
     current = Version.Current.calc(mode)
     next = Version.Next.calc(mode)

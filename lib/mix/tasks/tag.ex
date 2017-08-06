@@ -3,7 +3,7 @@ defmodule Mix.Tasks.Version.Tag do
 
   alias Mix.Tasks.Version
 
-  @shortdoc "Tag your project with the current version"
+  @shortdoc "Git tag your project (e.g. v1.2.3)"
   def run(args) do
     current_version = Version.Current.calc(args)
     repo = Git.new "."
