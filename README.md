@@ -147,6 +147,32 @@ inside your .git/hooks directory, simply call
 
 Your passphrase should be different then your hex.pm password.
 
+### Release Helper Functions
+
+When creating releases (aka `mix release`), there are a few scripts that
+are handy to have around to start a console, or upgrade the release, etc.
+To install these scripts into your project, run
+
+    mix release.bin
+
+This will create the following files:
+
+    ./bin/run/console     # start the release within an iEx console
+    ./bin/run/daemon      # start the release as a daemon script
+    ./bin/run/foreground  # start the release in the foreground for debugging
+    ./bin/run/downgrade   # downgrade to the previous release
+    ./bin/run/upgrade     # upgrade to the current release
+    ./bin/run/rel         # run any other `release` task available
+
+Please note that Phoenix (at present), was not reloading the re-compiled static
+assets on an `upgrade`, so we also write a `&<AppModule>.Release.clear_cache/0` to
+deal with ensuring that javascript and CSS are properly available.
+
+    ./lib/<appname>/release.ex
+
+You will need to commit these files to you project.  If you edit them, please let
+me (aforward@gmail.com) as the changes might be relevant to others.
+
 ## License
 
 MIT License
