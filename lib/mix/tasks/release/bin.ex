@@ -69,7 +69,14 @@ defmodule Mix.Tasks.Release.Bin do
     """
     |> write!("./bin/run/upgrade")
 
-    ["console"] #, "daemon", "downgrade", "foreground", "rel", "upgrade"]
+    """
+    #!/bin/bash
+    source ./bin/env && \\
+      _build/prod/rel/#{appname}/bin/#{appname} downgrade $1
+    """
+    |> write!("./bin/run/downgrade")
+
+    ["console", "daemon", "downgrade", "foreground", "rel", "upgrade"]
     |> Enum.each(fn filename ->
          :ok = "./bin/run/#{filename}"
                |> Path.expand
