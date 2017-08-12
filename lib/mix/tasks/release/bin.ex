@@ -6,10 +6,34 @@ defmodule Mix.Tasks.Release.Bin do
 
     Mix.Task.run("release.init", [])
 
-    :ok = "./bin/run" |> Path.expand |> File.mkdir_p!
+    [
+      "./bin/run",
+      "./bin/package",
+    ]
+    |> Enum.each(fn dirname ->
+         :ok = dirname |> Path.expand |> File.mkdir_p!
+       end)
 
     appname = Mix.Project.config[:app]
     module_name = appname |> Atom.to_string |> Macro.camelize
+
+
+    """
+    #!/bin/bash
+    mix deps.unlock --all && \\
+      mix deps.get && \\
+      mix compile && \\
+      (cd assets && npm install && brunch build --production) && \\
+      mix phx.digest
+    """
+    |> write!("./bin/package/prerelease")
+
+    """
+    #!/bin/bash
+    ./bin/package/prerelease && \\
+      mix release
+    """
+    |> write!("./bin/package/release")
 
     """
     #!/bin/bash
@@ -69,14 +93,31 @@ defmodule Mix.Tasks.Release.Bin do
     """
     |> write!("./bin/run/downgrade")
 
-    ["console", "daemon", "downgrade", "foreground", "rel", "upgrade"]
+    """
+    #!/bin/bash
+    ./bin/package/prerelease && \\
+      mix phx.server
+    """
+    |> write!("./bin/run/debug")
+
+    [
+      "./bin/run/console",
+      "./bin/run/daemon",
+      "./bin/run/downgrade",
+      "./bin/run/foreground",
+      "./bin/run/rel",
+      "./bin/run/upgrade",
+      "./bin/run/debug",
+      "./bin/package/prerelease",
+      "./bin/package/release",
+    ]
     |> Enum.each(fn filename ->
-         :ok = "./bin/run/#{filename}"
+         :ok = filename
                |> Path.expand
                |> File.chmod(0o755)
        end)
 
-    IO.puts "Installed several release scripts into ./bin/run"
+    IO.puts "Installed several release scripts into ./bin/run and ./bin/package"
   end
 
   defp write!(content, relative_name) do
