@@ -11,32 +11,27 @@ defmodule Mix.Tasks.Release.Bin do
     appname = Mix.Project.config[:app]
     module_name = appname |> Atom.to_string |> Macro.camelize
 
-
     """
     #!/bin/bash
-    source ./bin/env && \\
-      _build/prod/rel/#{appname}/bin/#{appname} console
+    _build/prod/rel/#{appname}/bin/#{appname} console
     """
     |> write!("./bin/run/console")
 
     """
     #!/bin/bash
-    source ./bin/env && \\
-      _build/prod/rel/#{appname}/bin/#{appname} start
+    _build/prod/rel/#{appname}/bin/#{appname} start
     """
     |> write!("./bin/run/daemon")
 
     """
     #!/bin/bash
-    source ./bin/env && \\
-      _build/prod/rel/#{appname}/bin/#{appname} foreground $1
+    _build/prod/rel/#{appname}/bin/#{appname} foreground $1
     """
     |> write!("./bin/run/foreground")
 
     """
     #!/bin/bash
-    source ./bin/env && \\
-      _build/prod/rel/#{appname}/bin/#{appname} $@
+    _build/prod/rel/#{appname}/bin/#{appname} $@
     """
     |> write!("./bin/run/rel")
 
@@ -63,16 +58,14 @@ defmodule Mix.Tasks.Release.Bin do
 
     """
     #!/bin/bash
-    source ./bin/env && \\
-      _build/prod/rel/#{appname}/bin/#{appname} upgrade $1 && \\
+    _build/prod/rel/#{appname}/bin/#{appname} upgrade $1 && \\
       ./bin/run/rel rpc Elixir.#{module_name}.Release clear_cache
     """
     |> write!("./bin/run/upgrade")
 
     """
     #!/bin/bash
-    source ./bin/env && \\
-      _build/prod/rel/#{appname}/bin/#{appname} downgrade $1
+    _build/prod/rel/#{appname}/bin/#{appname} downgrade $1
     """
     |> write!("./bin/run/downgrade")
 
