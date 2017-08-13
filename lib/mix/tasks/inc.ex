@@ -36,6 +36,7 @@ defmodule Mix.Tasks.Version.Inc do
   defp update_mix_version(line, current, next) do
     line
     |> String.replace("@version \"#{current}\"", "@version \"#{next}\"")
+    |> String.replace("version: \"#{current}\"", "version: \"#{next}\"")
   end
 
   defp update_readme_version(line, current, next) do

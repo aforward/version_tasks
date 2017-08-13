@@ -21,7 +21,18 @@ defmodule Mix.Tasks.Version.Current do
   end
 
   defp find_version(line) do
+    find_version(:variable, line) || find_version(:inline, line)
+  end
+
+  defp find_version(:variable, line) do
     case Regex.run(~r{@version \"(.*)\"}, line) do
+      nil -> nil
+      [_, version] -> version
+    end
+  end
+
+  defp find_version(:inline, line) do
+    case Regex.run(~r{version: \"(.*)\"}, line) do
       nil -> nil
       [_, version] -> version
     end
