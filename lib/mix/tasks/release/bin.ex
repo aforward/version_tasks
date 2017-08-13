@@ -93,6 +93,41 @@ defmodule Mix.Tasks.Release.Bin do
     """
     |> write!("./bin/run/debug")
 
+    """
+    #!/bin/bash
+    VERSION=$1
+
+    if [[ "$VERSION" == "" ]]; then
+      ./bin/package/checkout
+      VERSION=$(mix version.current)
+    else
+      ./bin/package/checkout v$VERSION
+    fi
+
+    ./bin/package/prerelease
+    mix release
+    ./bin/run/daemon
+    """
+    |> write!("./bin/run/appgo")
+
+    """
+    #!/bin/bash
+    VERSION=$1
+
+    if [[ "$VERSION" == "" ]]; then
+      ./bin/package/checkout
+      VERSION=$(mix version.current)
+    else
+      ./bin/package/checkout v$VERSION
+    fi
+
+    ./bin/package/prerelease
+    mix release --upgrade
+    ./bin/run/upgrade $VERSION
+    mix release
+    """
+    |> write!("./bin/run/appup")
+
     [
       "./bin/run/console",
       "./bin/run/daemon",
@@ -101,6 +136,8 @@ defmodule Mix.Tasks.Release.Bin do
       "./bin/run/rel",
       "./bin/run/upgrade",
       "./bin/run/debug",
+      "./bin/run/appup",
+      "./bin/run/appgo",
       "./bin/package/prerelease",
     ]
     |> Enum.each(fn filename ->
