@@ -37,6 +37,13 @@ defmodule Mix.Tasks.Release.Bin do
 
     """
     #!/bin/bash
+    ./bin/package/prerelease && \\
+      mix release --upgrade
+    """
+    |> write!("./bin/package/upgrade")
+
+    """
+    #!/bin/bash
     _build/prod/rel/#{appname}/bin/#{appname} console
     """
     |> write!("./bin/run/console")
@@ -110,6 +117,7 @@ defmodule Mix.Tasks.Release.Bin do
       "./bin/run/debug",
       "./bin/package/prerelease",
       "./bin/package/release",
+      "./bin/package/upgrade",
     ]
     |> Enum.each(fn filename ->
          :ok = filename
