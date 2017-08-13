@@ -38,8 +38,8 @@ defmodule Mix.Tasks.Release.Bin do
     """
     #!/bin/bash
     ./bin/package/prerelease && \\
-      mix release && \\
-      mix release --upgrade
+      mix release --upgrade && \\
+      mix release
     """
     |> write!("./bin/package/upgrade")
 
