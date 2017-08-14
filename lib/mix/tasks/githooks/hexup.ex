@@ -13,8 +13,9 @@ if [ "$VERSION" != "" ]; then
   echo "================="
   echo "HEX PUBLISH $VERSION"
   echo "================="
-  mix version.tag
-  mix hex.publish <<EOF
+  mix test && \
+    mix version.tag && \
+    mix hex.publish <<EOF
 #{passphrase}
 Y
 EOF
@@ -25,7 +26,7 @@ fi
     File.write!(filename, content)
     :ok = File.chmod(filename, 0o755)
     IO.puts "Installed #{filename}"
-    IO.puts "to automatically 'mix version.tag' & 'mix hex.publish'"
+    IO.puts "to automatically 'mix test && mix version.tag && mix hex.publish'"
     IO.puts "after a 'mix version.up'"
     filename
   end
