@@ -2,7 +2,8 @@ defmodule Mix.Tasks.Release.Bin do
   use Mix.Task
 
   @shortdoc "Initialize and create 'bin/run' helper scripts for managing releases"
-  def run(_) do
+  def run([]), do: run([nil])
+  def run([release_root]) do
 
     Mix.Task.run("release.init", [])
 
@@ -15,49 +16,17 @@ defmodule Mix.Tasks.Release.Bin do
        end)
 
     appname = Mix.Project.config[:app]
+    default_root = "/src/#{appname}rel"
+    release_root = release_root || default_root
     module_name = appname |> Atom.to_string |> Macro.camelize
 
-
-    """
-    #!/bin/bash
-    mix deps.unlock --all && \\
-      mix deps.get && \\
-      mix compile && \\
-      (cd assets && npm install && brunch build --production) && \\
-      mix phx.digest
-    """
-    |> write!("./bin/package/prerelease")
-
-    """
-    #!/bin/bash
-    _build/prod/rel/#{appname}/bin/#{appname} console
-    """
-    |> write!("./bin/run/console")
-
-    """
-    #!/bin/bash
-    _build/prod/rel/#{appname}/bin/#{appname} start
-    """
-    |> write!("./bin/run/daemon")
-
-    """
-    #!/bin/bash
-    _build/prod/rel/#{appname}/bin/#{appname} foreground $1
-    """
-    |> write!("./bin/run/foreground")
-
-    """
-    #!/bin/bash
-    _build/prod/rel/#{appname}/bin/#{appname} $@
-    """
-    |> write!("./bin/run/rel")
 
     """
     defmodule #{module_name}.Release do
 
       @doc\"""
-      EXRM upgrades were not (for me anyway) clearning the assets
-      cache, so this called after an upgrade using RPC, something LexicalTracker.
+      Distillery upgrades were not (for me anyway) clearning the assets
+      cache, so this called after an upgrade using RPC.
 
           ./bin/run/rel rpc #{module_name}.Release clear_cache
 
@@ -73,72 +42,77 @@ defmodule Mix.Tasks.Release.Bin do
     """
     |> write!("./lib/#{appname}/release.ex")
 
-    """
-    #!/bin/bash
-    _build/prod/rel/#{appname}/bin/#{appname} upgrade $1 && \\
-      ./bin/run/rel rpc Elixir.#{module_name}.Release clear_cache
-    """
-    |> write!("./bin/run/upgrade")
 
     """
     #!/bin/bash
-    _build/prod/rel/#{appname}/bin/#{appname} downgrade $1
+    mix deps.unlock --all && \\
+      mix deps.get && \\
+      mix compile && \\
+      (cd assets && npm install && brunch build --production) && \\
+      mix phx.digest
     """
-    |> write!("./bin/run/downgrade")
+    |> write!("./bin/package/prerelease")
+
+    """
+    #!/bin/bash
+    mix release --upgrade
+    """
+    |> write!("./bin/package/release")
+
+
+    """
+    VERSION=$(mix version.current)
+    REL_ROOT=#{release_root}
+
+    if [[ ! -e #{release_root}/.git ]]; then
+      (cd #{release_root} && git init)
+    fi
+
+    mkdir -p ${REL_ROOT}/releases/${VERSION}
+
+    cp ./_build/prod/rel/#{appname}/releases/${VERSION}/#{appname}.tar.gz ${REL_ROOT}/releases/${VERSION}/#{appname}.tar.gz
+    (cd ${REL_ROOT} && \
+     ln -sf releases/${VERSION}/#{appname}.tar.gz #{appname}.tar.gz && \
+     git add -f releases/${VERSION}/#{appname}.tar.gz && \
+     git add #{appname}.tar.gz
+     git commit -m "v${VERSION}" && \
+     git push)
+    """
+    |> write!("./bin/package/retain")
+
+
+    """
+    #!/bin/bash
+
+    if [[ ! -e #{release_root}/bin/#{appname} ]]; then
+      tar zxfv nameui.tar.gz
+    fi
+
+    #{release_root}/bin/#{appname} $@
+    """
+    |> write!("./bin/run/rel")
+
+
+    """
+    #!/bin/bash
+    ./bin/run/rel rpc Elixir.#{module_name}.Release clear_cache
+    """
+    |> write!("./bin/run/clear_cache")
 
     """
     #!/bin/bash
     ./bin/package/prerelease && \\
-      mix phx.server
+      iex -S mix phx.server
     """
     |> write!("./bin/run/debug")
 
-    """
-    #!/bin/bash
-    VERSION=$1
-
-    if [[ "$VERSION" == "" ]]; then
-      ./bin/package/checkout
-      VERSION=$(mix version.current)
-    else
-      ./bin/package/checkout v$VERSION
-    fi
-
-    ./bin/package/prerelease
-    mix release
-    ./bin/run/daemon
-    """
-    |> write!("./bin/run/appgo")
-
-    """
-    #!/bin/bash
-    VERSION=$1
-
-    if [[ "$VERSION" == "" ]]; then
-      ./bin/package/checkout
-      VERSION=$(mix version.current)
-    else
-      ./bin/package/checkout v$VERSION
-    fi
-
-    ./bin/package/prerelease
-    mix release --upgrade
-    ./bin/run/upgrade $VERSION
-    mix release
-    """
-    |> write!("./bin/run/appup")
 
     [
-      "./bin/run/console",
-      "./bin/run/daemon",
-      "./bin/run/downgrade",
-      "./bin/run/foreground",
-      "./bin/run/rel",
-      "./bin/run/upgrade",
-      "./bin/run/debug",
-      "./bin/run/appup",
-      "./bin/run/appgo",
       "./bin/package/prerelease",
+      "./bin/package/release",
+      "./bin/package/retain",
+      "./bin/run/rel",
+      "./bin/run/debug",
     ]
     |> Enum.each(fn filename ->
          :ok = filename
