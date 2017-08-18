@@ -61,6 +61,7 @@ defmodule Mix.Tasks.Release.Bin do
 
 
     """
+    #!/bin/bash
     VERSION=$(mix version.current)
     REL_ROOT=#{release_root}
 
