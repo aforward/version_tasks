@@ -95,6 +95,20 @@ defmodule Mix.Tasks.Release.Bin do
 
     """
     #!/bin/bash
+
+    VERISON=$1
+    RUNNING=$(./bin/run/rel ping)
+
+    if [[ "$RUNNING" == "pong" ]]; then
+      ./bin/run/rel upgrade $VERSION
+    else
+     ./bin/run/rel start
+    fi
+    """
+    |> write!("./bin/run/launch")
+
+    """
+    #!/bin/bash
     ./bin/run/rel rpc Elixir.#{module_name}.Release clear_cache
     """
     |> write!("./bin/run/clear_cache")
@@ -112,6 +126,7 @@ defmodule Mix.Tasks.Release.Bin do
       "./bin/package/release",
       "./bin/package/retain",
       "./bin/run/rel",
+      "./bin/run/launch",
       "./bin/run/debug",
     ]
     |> Enum.each(fn filename ->
