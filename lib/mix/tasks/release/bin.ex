@@ -85,7 +85,7 @@ defmodule Mix.Tasks.Release.Bin do
     #!/bin/bash
 
     if [[ ! -e #{release_root}/bin/#{appname} ]]; then
-      tar zxfv nameui.tar.gz
+      (cd #{release_root} && tar zxfv nameui.tar.gz)
     fi
 
     #{release_root}/bin/#{appname} $@
