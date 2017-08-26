@@ -110,8 +110,8 @@ defmodule Mix.Tasks.Release.Bin do
     VERSION=$(mix version.current)
     REL_ROOT=#{release_root}
 
-    if [[ ! -e #{release_root}/.git ]]; then
-      (cd #{release_root} && git init)
+    if [[ ! -e ${REL_ROOT}/.git ]]; then
+      (cd ${REL_ROOT} && git init)
     fi
 
     mkdir -p ${REL_ROOT}/releases/${VERSION}
