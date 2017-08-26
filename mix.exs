@@ -4,7 +4,7 @@ defmodule VersionTasks.Mixfile do
   @app :version_tasks
   @git_url "https://github.com/aforward/version_tasks"
   @home_url @git_url
-  @version "0.10.12"
+  @version "0.10.13"
 
   @deps [
     {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
