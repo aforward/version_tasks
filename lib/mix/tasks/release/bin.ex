@@ -142,7 +142,7 @@ defmodule Mix.Tasks.Release.Bin do
     """
     #!/bin/bash
 
-    VERISON=$1
+    VERSION=$1
     RUNNING=$(./bin/run/rel ping)
 
     if [[ "$RUNNING" == "pong" ]]; then
