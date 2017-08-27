@@ -116,9 +116,12 @@ defmodule Mix.Tasks.Release.Bin do
 
     mkdir -p ${REL_ROOT}/releases/${VERSION}
 
-    cp ./_build/prod/rel/#{appname}/releases/${VERSION}/#{appname}.tar.gz ${REL_ROOT}/releases/${VERSION}/#{appname}.tar.gz
+    cp ./_build/prod/rel/#{appname}/releases/${VERSION}/#{appname}.tar.gz \\
+       ${REL_ROOT}/releases/${VERSION}/#{appname}.tar.gz
+
     (cd ${REL_ROOT} && \\
      ln -sf releases/${VERSION}/#{appname}.tar.gz #{appname}.tar.gz && \\
+     tar zxf #{appname}.tar.gz && \\
      git add -f releases/${VERSION}/#{appname}.tar.gz && \\
      git add #{appname}.tar.gz && \\
      git commit -m "v${VERSION}" && \\
@@ -131,7 +134,7 @@ defmodule Mix.Tasks.Release.Bin do
     #!/bin/bash
 
     if [[ ! -e #{release_root}/bin/#{appname} ]]; then
-      (cd #{release_root} && tar zxfv nameui.tar.gz)
+      (cd #{release_root} && tar zxfv #{appname}.tar.gz)
     fi
 
     #{release_root}/bin/#{appname} $@
