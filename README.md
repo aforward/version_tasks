@@ -31,11 +31,12 @@ Here's the basic usage
 
     MIX_QUIET=1 mix version.<current|inc|next|tag|up>
 
-Notice the MIX_QUIET=1, this is important if you want to use these
-scripts in other scripts and only get the answer back, not the additional
-debugging outputs.
+Notice the MIX_QUIET=1, can sometimes be important if you are
+using this within a `dev` environment where additional debugging
+output might be included
 
-The examples below will omit the `MIX_QUIET=1`for brevity.
+The examples below will omit the `MIX_QUIET=1`for brevity, and as
+it isn't strictly required.
 
 #### mix version.current
 
@@ -68,6 +69,23 @@ The default increment step is patch, here are a few examples from the version ab
 
     mix version.next major
     2.0.0
+
+#### mix version.name
+
+After an upgrade, you might want to trigger additional actions, such as run tests
+create a release and deploy an update.  You can ask for the `name` of the version using:
+
+    # For anything like X.0.0, that's a major release
+    mix version.name
+    major
+
+    # For anything like X.Y.0, that's a minor release
+    mix version.name
+    minor
+
+    # For all other releases, like X.Y.Z, that's a patch release
+    mix version.name
+    patch
 
 ### Local Editing Tasks
 

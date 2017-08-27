@@ -12,11 +12,12 @@ defmodule VersionTasks do
 
       MIX_QUIET=1 mix version.<current|inc|next|tag|up>
 
-  Notice the MIX_QUIET=1, this is important if you want to use these
-  scripts in other scripts and only get the answer back, not the additional
-  debugging outputs.
+  Notice the MIX_QUIET=1, can sometimes be important if you are
+  using this within a `dev` environment where additional debugging
+  output might be included
 
-  The examples below will omit the `MIX_QUIET=1`for brevity.
+  The examples below will omit the `MIX_QUIET=1`for brevity, and as
+  it isn't strictly required.
 
   ### mix version.current
 
@@ -49,6 +50,23 @@ defmodule VersionTasks do
 
       mix version.next major
       2.0.0
+
+  ### mix version.name
+
+  After an upgrade, you might want to trigger additional actions, such as run tests
+  create a release and deploy an update.  You can ask for the `name` of the version using:
+
+      # For anything like X.0.0, that's a major release
+      mix version.name
+      major
+
+      # For anything like X.Y.0, that's a minor release
+      mix version.name
+      minor
+
+      # For all other releases, like X.Y.Z, that's a patch release
+      mix version.name
+      patch
 
   ## Local Editing Tasks
 
@@ -131,29 +149,59 @@ defmodule VersionTasks do
 
   ## Release Helper Functions
 
+  THIS FEATURE IS IN BETA, AND NOT READY FOR PRIME TIME.
+
+  If you are adventurous enough to use it, please send me feedback (raise an issue,
+  push a pull request or contact me through GitHub)
+
   When creating releases (aka `mix release`), there are a few scripts that
   are handy to have around to start a console, or upgrade the release, etc.
   To install these scripts into your project, run
 
-      mix release.bin
+      mix release.bin <release_path>
 
-  This will create the following files:
+  The `<release_path>` is the location where your releases will be stored.
+  At present, it drops them into a local git repository, but going forward
+  additional storage mechanism (e.g AWS S3) could be supported.
 
-      ./bin/run/console     # start the release within an iEx console
-      ./bin/run/daemon      # start the release as a daemon script
-      ./bin/run/foreground  # start the release in the foreground for debugging
-      ./bin/run/downgrade   # downgrade to the previous release
-      ./bin/run/upgrade     # upgrade to the current release
-      ./bin/run/rel         # run any other `release` task available
+  The generated scripts call into three categories (and will be placed in
+  3 directories):
+
+      # These are scripts to help build and package your release
+      ./bin/package
+
+        + prerelease        # Prepare your release (compile, digest, etc)
+        + release           # Create a release using distillery
+        + retain            # Store the release in your `<release_path>`
+
+      # These are scripts to help `run` your released app
+      ./bin/run
+
+        + debug             # Start your app based on compiles source (not a release)
+        + launch            # Upgrade (if running) or start (if stopped) your application
+        + rel               # Interact with your release (e.g. `<release_path>/bin/<appname>`)
+
+      # These are scripts that can be deployed as custom commands
+      # into your release
+      ./rel/commands
+
+        + clear_cache       # Clear the phoenix assets after a hot code swap
+        + migrate           # Migrate all available Ecto repos
 
   Please note that Phoenix (at present), was not reloading the re-compiled static
-  assets on an `upgrade`, so we also write a `&<AppModule>.Release.clear_cache/0` to
+  assets on an `upgrade`, so we also write a `&<AppModule>.ReleaseTasks.clear_cache/0` to
   deal with ensuring that javascript and CSS are properly available.
 
-      ./lib/<appname>/release.ex
+  We also expose `&<AppModule>.ReleaseTasks.migrate/0` to help migrate any configured
+  ecto repoistories.  Plans to create if missing will be considered, but not yet available.
+
+  These functions are available in
+
+      ./lib/<appname>/release_tasks.ex.ex
 
   You will need to commit these files to you project.  If you edit them, please let
-  me (aforward@gmail.com) as the changes might be relevant to others.
+  me know (raise an issue, push a pull request or contact me through GitHub) as the
+  changes might be relevant to others.
 
   """
 
