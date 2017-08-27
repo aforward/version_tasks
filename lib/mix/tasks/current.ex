@@ -10,7 +10,7 @@ defmodule Mix.Tasks.Version.Current do
   end
 
   @shortdoc "Calculate the current version"
-  def calc(_) do
+  def calc(_ \\ nil) do
     "mix.exs"
     |> File.read
     |> invoke(fn ({:ok, content}) -> content end)
