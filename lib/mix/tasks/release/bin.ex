@@ -117,11 +117,11 @@ defmodule Mix.Tasks.Release.Bin do
     mkdir -p ${REL_ROOT}/releases/${VERSION}
 
     cp ./_build/prod/rel/#{appname}/releases/${VERSION}/#{appname}.tar.gz ${REL_ROOT}/releases/${VERSION}/#{appname}.tar.gz
-    (cd ${REL_ROOT} && \
-     ln -sf releases/${VERSION}/#{appname}.tar.gz #{appname}.tar.gz && \
-     git add -f releases/${VERSION}/#{appname}.tar.gz && \
-     git add #{appname}.tar.gz
-     git commit -m "v${VERSION}" && \
+    (cd ${REL_ROOT} && \\
+     ln -sf releases/${VERSION}/#{appname}.tar.gz #{appname}.tar.gz && \\
+     git add -f releases/${VERSION}/#{appname}.tar.gz && \\
+     git add #{appname}.tar.gz && \\
+     git commit -m "v${VERSION}" && \\
      git push)
     """
     |> write!("./bin/package/retain")
