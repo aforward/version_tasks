@@ -87,6 +87,33 @@ create a release and deploy an update.  You can ask for the `name` of the versio
     mix version.name
     patch
 
+#### mix version.is_release
+
+This is the same as `mix version.name` with the exception that it will only return the
+version name *IF* the last commit was a version commit, which looks like `vX.Y.Z`.
+
+    # If the last commit was `Doing something great`, then it returns nothing
+    mix version.is_release
+
+    # However, if the last commit was `v1.2.0`, then it returns `minor`
+    mix version.is_release
+    minor
+
+#### mix version.last_commit
+
+To help us trigger when a release has been requested, we are exposing the last commit
+message, this delegates to git and simply calls (`git log --format=%B -n 1 HEAD`)
+
+    # Grab the last commit
+    mix version.last_commit
+    Simplify the database backup, to make restore easier
+
+    # Hey, this commmit looks like a new release was commit
+    mix version.last_commit
+    v1.4.5
+
+
+
 ### Local Editing Tasks
 
 The following tasks will edit your local files, but will not commit or push any of those changes.
