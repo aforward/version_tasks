@@ -15,6 +15,7 @@ defmodule Mix.Tasks.Version do
     # Run `mix help --search githooks.` to get this output
     # and paste here
 
+    Shell.info "mix version.bin.db      # Create 'bin/db' helper scripts for managing database backups"
     Shell.info "mix version.bin.release # Initialize and create some 'bin' helper scripts for managing releases"
     Shell.info "mix version.current     # Calculate the current version"
     Shell.info "mix version.inc         # Inc to the next (major|minor|patch) version of your project"
