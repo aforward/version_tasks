@@ -7,9 +7,7 @@ defmodule Mix.Tasks.Githooks.Hexup do
     filename = ".git/hooks/post-commit"
     content = """
 #!/bin/bash
-MESSAGE=$(git log --format=%B -n 1 HEAD)
-VERSION=$(echo $MESSAGE | grep "v[0-9]\\{1,\\}\\.[0-9]\\{1,\\}\\.[0-9]\\{1,\\}")
-if [ "$VERSION" != "" ]; then
+if [ "$(MIX_QUIET=true mix version.is_release)" != "" ]; then
   echo "================="
   echo "HEX PUBLISH $VERSION"
   echo "================="
