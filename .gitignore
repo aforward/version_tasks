@@ -22,3 +22,4 @@ erl_crash.dump
 # Code generated from task during testing
 /bin
 /lib/version_tasks/release.ex
+rel/commands

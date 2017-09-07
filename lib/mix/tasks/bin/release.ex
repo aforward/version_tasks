@@ -211,7 +211,6 @@ defmodule Mix.Tasks.Version.Bin.Release do
     IO.puts example
     IO.puts ""
 
-
   end
 
   defp write!(content, relative_name) do

@@ -1,13 +1,13 @@
 defmodule Mix.Tasks.Version.Bin.Db do
   use Mix.Task
 
-  @shortdoc "Create 'bin/db' helper scripts for managing database backups"
+  @shortdoc "Create 'rel/commands' helper scripts for managing database backup / restore"
   def run([]), do: run([nil, nil])
   def run([backup_root]), do: run([backup_root, nil])
   def run([backup_root, dbname]) do
 
     [
-      "./bin/db",
+      "./rel/commands",
     ]
     |> Enum.each(fn dirname ->
          :ok = dirname |> Path.expand |> File.mkdir_p!
@@ -36,7 +36,7 @@ defmodule Mix.Tasks.Version.Bin.Db do
      git commit -m "Backup ${DBNAME} v${VERSION} (${NOW})" && \\
      git push)
     """
-    |> write!("./bin/db/backup")
+    |> write!("./rel/commands/backup")
 
     """
     #!/bin/bash
@@ -47,12 +47,12 @@ defmodule Mix.Tasks.Version.Bin.Db do
     (cd ${BACKUP_ROOT} && \\
      psql -d ${DBNAME} -f $(tar zxfv ${DBNAME}.tar.gz))
     """
-    |> write!("./bin/db/restore")
+    |> write!("./rel/commands/restore")
 
 
     [
-      "./bin/db/backup",
-      "./bin/db/restore",
+      "./rel/commands/backup",
+      "./rel/commands/restore",
     ]
     |> Enum.each(fn filename ->
          :ok = filename
@@ -60,9 +60,26 @@ defmodule Mix.Tasks.Version.Bin.Db do
                |> File.chmod(0o755)
        end)
 
-    IO.puts "Installed the following scripts into ./bin/db"
+    IO.puts "Installed the following scripts into ./rel/commands"
     IO.puts "   + backup     \# Backup your database (named #{appname})"
     IO.puts "   + restore    \# Restore your database (named #{appname})"
+    IO.puts ""
+
+    IO.puts "To enable those to be part of the release,"
+    IO.puts "then ensure you update your ./rel/config.exs with:"
+    IO.puts ""
+
+    example = """
+    release :#{appname} do
+      ...
+      set commands: [
+        "backup": "rel/commands/backup"
+        "restore": "rel/commands/restore"
+      ]
+    end
+    """
+
+    IO.puts example
     IO.puts ""
 
   end
