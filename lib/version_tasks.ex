@@ -221,7 +221,7 @@ defmodule VersionTasks do
 
         # Add these to your :commands
         set commands: [
-          "clear_cache": "rel/commands/clear_cache"
+          "clear_cache": "rel/commands/clear_cache",
           "migrate": "rel/commands/migrate"
         ]
 
@@ -280,7 +280,7 @@ defmodule VersionTasks do
 
         # Add these to your :commands
         set commands: [
-          "enable": "rel/commands/enable"
+          "enable": "rel/commands/enable",
           "disable": "rel/commands/disable"
         ]
 

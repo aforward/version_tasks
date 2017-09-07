@@ -73,7 +73,7 @@ defmodule Mix.Tasks.Version.Bin.Db do
     release :#{appname} do
       ...
       set commands: [
-        "backup": "rel/commands/backup"
+        "backup": "rel/commands/backup",
         "restore": "rel/commands/restore"
       ]
     end

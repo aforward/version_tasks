@@ -202,7 +202,7 @@ defmodule Mix.Tasks.Version.Bin.Release do
     release :#{appname} do
       ...
       set commands: [
-        "clear_cache": "rel/commands/clear_cache"
+        "clear_cache": "rel/commands/clear_cache",
         "migrate": "rel/commands/migrate"
       ]
     end

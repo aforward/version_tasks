@@ -124,7 +124,7 @@ defmodule Mix.Tasks.Version.Bin.Ff do
     release :#{appname} do
       ...
       set commands: [
-        "enable": "rel/commands/enable"
+        "enable": "rel/commands/enable",
         "disable": "rel/commands/disable"
       ]
     end
