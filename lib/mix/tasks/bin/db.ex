@@ -45,7 +45,7 @@ defmodule Mix.Tasks.Version.Bin.Db do
     BACKUP_ROOT=#{backup_root}
 
     (cd ${BACKUP_ROOT} && \\
-     psql -d ${DBNAME} -f $(tar zxfv ${DBNAME}.tar.gz))
+     psql -f $(tar zxfv ${DBNAME}.tar.gz))
     """
     |> write!("./rel/commands/restore")
 
