@@ -1,0 +1,2 @@
+#!/bin/bash
+bin/version_tasks rpc Elixir.VersionTasks.FeatureFlags disable "$1"

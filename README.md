@@ -20,7 +20,17 @@ versionning](http://semver.org/), [Spec-ulation from Rich Hickey](https://www.yo
 
 ## Usage
 
-A set of Mix Tasks for managing your version numbers
+A set of Mix Tasks for managing your version numbers.  This is best used
+in conjunction with your release strategy, and so we also provide some
+opionated generated code / bash scripts to support you in your quest for
+towards continuous deployment.
+
+To get a list of all available mix tasks (in case the docs might be stale),
+you can run
+
+    mix version
+
+Below is a bit more information about the available tasks and how to use them.
 
 ### Information Tasks
 
@@ -194,26 +204,124 @@ Your passphrase should be different then your hex.pm password.
 
 ### Release Helper Functions
 
+#### mix version.bin.release
+
 When creating releases (aka `mix release`), there are a few scripts that
 are handy to have around to start a console, or upgrade the release, etc.
 To install these scripts into your project, run
 
-    mix release.bin
+    mix version.bin.release <release_dir>?
+
+You can provide an optional `<release_dir>` (defaults to `/src/{appname}rel`)
+which knows how to grab your created release and put it in a git repo.  If
+you don't know or don't care for this, then ignore it.
 
 This will create the following files:
 
-    ./bin/run/console     # start the release within an iEx console
-    ./bin/run/daemon      # start the release as a daemon script
-    ./bin/run/foreground  # start the release in the foreground for debugging
-    ./bin/run/downgrade   # downgrade to the previous release
-    ./bin/run/upgrade     # upgrade to the current release
-    ./bin/run/rel         # run any other `release` task available
+    ./bin/package/prerelease    # Fetch dependencies, compile, build and digest assets
+    ./bin/package/release       # Generate an "upgradeable" ERTS release
+    ./bin/package/retain        # Commit your release to a separate repo
+
+    ./bin/run/rel               # run any other `release` task available
+    ./bin/run/launch            # Start you app (if stopped), upgrade if running
+    ./bin/run/debug             # Start you app from code in an iEX shell
+
+It will also create two custom commands, and place them in
+
+    ./rel/commands/clear_cache  # Clear the phoenix cache to support hot code swapping
+    ./rel/commands/migrate      # Migrate your ecto database
+
+To make these available, you will need to follow the instructions to add them
+to your `rel/config.exs` file.  It will look similar to:
+
+    release :<your appname> do
+
+      ...
+
+      # Add these to your :commands
+      set commands: [
+        "clear_cache": "rel/commands/clear_cache"
+        "migrate": "rel/commands/migrate"
+      ]
+
+    end
+
+Once available, you will be able to call them directly, such as
+
+    ./bin/<appname> clear_cache
+    ./bin/<appname> migrate
 
 Please note that Phoenix (at present), was not reloading the re-compiled static
-assets on an `upgrade`, so we also write a `&<AppModule>.Release.clear_cache/0` to
+assets on an `upgrade`, so we also write a `&<AppModule>.ReleaseTasks.clear_cache/0` to
 deal with ensuring that javascript and CSS are properly available.
 
-    ./lib/<appname>/release.ex
+    ./lib/<appname>/release_tasks.ex
+
+You will need to commit these files to you project.  If you edit them, please let
+me (aforward@gmail.com) as the changes might be relevant to others.
+
+
+#### mix version.bin.ff
+
+This will create a `&<AppModule>.FeatureFlags` GenServer, which is really just a
+simple map of `enabled` or `disabled` atoms.
+
+To install these scripts into your project, run
+
+    mix version.bin.ff
+
+To enable a feature flag, say `deploying`, run
+
+    <AppModule>.FeatureFlags.enable(:deploying)
+
+To disable that flag, run
+
+    <AppModule>.FeatureFlags.disable(:deploying)
+
+In your code, you can then make decisions based on those flags
+
+    <%= if <AppModule>.FeatureFlags.enabled?(:deploying) do %>
+      <p>We are deploying updates to server you better</p>
+    <% end %>
+
+We will also expose that functionality within your release.  It will create two
+custom scripts
+
+    ./rel/commands/enable <flag>    # Enable the provided feature <flag>
+    ./rel/commands/disable <flag>   # Disable the provided feature <flag>
+
+To make these available, you will need to follow the instructions to add them
+to your `rel/config.exs` file.  It will look similar to:
+
+    release :<your appname> do
+
+      ...
+
+      # Add these to your :commands
+      set commands: [
+        "enable": "rel/commands/enable"
+        "disable": "rel/commands/disable"
+      ]
+
+    end
+
+
+You will need to commit these files to you project.  If you edit them, please let
+me (aforward@gmail.com) as the changes might be relevant to others.
+
+
+#### mix version.bin.db
+
+This will add helper scripts to `bin/db` for backing up and restoring your database.  Very opinionated, and only works for postgres.
+
+To install these scripts into your project, run
+
+    mix version.bin.db
+
+This will create the following files:
+
+    ./bin/db/backup     # Backup your database
+    ./bin/db/restore    # Restore your database
 
 You will need to commit these files to you project.  If you edit them, please let
 me (aforward@gmail.com) as the changes might be relevant to others.

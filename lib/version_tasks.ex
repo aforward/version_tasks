@@ -1,7 +1,18 @@
 defmodule VersionTasks do
 
   @moduledoc"""
-  A set of Mix Tasks for managing your version numbers
+  A set of Mix Tasks for managing your version numbers.  This is best used
+  in conjunction with your release strategy, and so we also provide some
+  opionated generated code / bash scripts to support you in your quest for
+  towards continuous deployment.
+
+  To get a list of all available mix tasks (in case the docs might be stale),
+  you can run
+
+      mix version
+
+  Below is a bit more information about the available tasks and how to use them.
+
 
   ## Information Tasks
 
@@ -174,59 +185,131 @@ defmodule VersionTasks do
 
   ## Release Helper Functions
 
-  THIS FEATURE IS IN BETA, AND NOT READY FOR PRIME TIME.
-
-  If you are adventurous enough to use it, please send me feedback (raise an issue,
-  push a pull request or contact me through GitHub)
+  ### mix version.bin.release
 
   When creating releases (aka `mix release`), there are a few scripts that
   are handy to have around to start a console, or upgrade the release, etc.
   To install these scripts into your project, run
 
-      mix release.bin <release_path>
+      mix version.bin.release <release_dir>?
 
-  The `<release_path>` is the location where your releases will be stored.
-  At present, it drops them into a local git repository, but going forward
-  additional storage mechanism (e.g AWS S3) could be supported.
+  You can provide an optional `<release_dir>` (defaults to `/src/{appname}rel`)
+  which knows how to grab your created release and put it in a git repo.  If
+  you don't know or don't care for this, then ignore it.
 
-  The generated scripts call into three categories (and will be placed in
-  3 directories):
+  This will create the following files:
 
-      # These are scripts to help build and package your release
-      ./bin/package
+      ./bin/package/prerelease    # Fetch dependencies, compile, build and digest assets
+      ./bin/package/release       # Generate an "upgradeable" ERTS release
+      ./bin/package/retain        # Commit your release to a separate repo
 
-        + prerelease        # Prepare your release (compile, digest, etc)
-        + release           # Create a release using distillery
-        + retain            # Store the release in your `<release_path>`
+      ./bin/run/rel               # run any other `release` task available
+      ./bin/run/launch            # Start you app (if stopped), upgrade if running
+      ./bin/run/debug             # Start you app from code in an iEX shell
 
-      # These are scripts to help `run` your released app
-      ./bin/run
+  It will also create two custom commands, and place them in
 
-        + debug             # Start your app based on compiles source (not a release)
-        + launch            # Upgrade (if running) or start (if stopped) your application
-        + rel               # Interact with your release (e.g. `<release_path>/bin/<appname>`)
+      ./rel/commands/clear_cache  # Clear the phoenix cache to support hot code swapping
+      ./rel/commands/migrate      # Migrate your ecto database
 
-      # These are scripts that can be deployed as custom commands
-      # into your release
-      ./rel/commands
+  To make these available, you will need to follow the instructions to add them
+  to your `rel/config.exs` file.  It will look similar to:
 
-        + clear_cache       # Clear the phoenix assets after a hot code swap
-        + migrate           # Migrate all available Ecto repos
+      release :<your appname> do
+
+        ...
+
+        # Add these to your :commands
+        set commands: [
+          "clear_cache": "rel/commands/clear_cache"
+          "migrate": "rel/commands/migrate"
+        ]
+
+      end
+
+  Once available, you will be able to call them directly, such as
+
+      ./bin/<appname> clear_cache
+      ./bin/<appname> migrate
 
   Please note that Phoenix (at present), was not reloading the re-compiled static
   assets on an `upgrade`, so we also write a `&<AppModule>.ReleaseTasks.clear_cache/0` to
   deal with ensuring that javascript and CSS are properly available.
 
-  We also expose `&<AppModule>.ReleaseTasks.migrate/0` to help migrate any configured
-  ecto repoistories.  Plans to create if missing will be considered, but not yet available.
-
-  These functions are available in
-
-      ./lib/<appname>/release_tasks.ex.ex
+      ./lib/<appname>/release_tasks.ex
 
   You will need to commit these files to you project.  If you edit them, please let
-  me know (raise an issue, push a pull request or contact me through GitHub) as the
-  changes might be relevant to others.
+  me (aforward@gmail.com) as the changes might be relevant to others.
+
+
+  ### mix version.bin.ff
+
+  This will create a `&<AppModule>.FeatureFlags` GenServer, which is really just a
+  simple map of `enabled` or `disabled` atoms.
+
+  To install these scripts into your project, run
+
+      mix version.bin.ff
+
+  To enable a feature flag, say `deploying`, run
+
+      <AppModule>.FeatureFlags.enable(:deploying)
+
+  To disable that flag, run
+
+      <AppModule>.FeatureFlags.disable(:deploying)
+
+  In your code, you can then make decisions based on those flags
+
+      <%= if <AppModule>.FeatureFlags.enabled?(:deploying) do %>
+        <p>We are deploying updates to server you better</p>
+      <% end %>
+
+  We will also expose that functionality within your release.  It will create two
+  custom scripts
+
+      ./rel/commands/enable <flag>    # Enable the provided feature <flag>
+      ./rel/commands/disable <flag>   # Disable the provided feature <flag>
+
+  To make these available, you will need to follow the instructions to add them
+  to your `rel/config.exs` file.  It will look similar to:
+
+      release :<your appname> do
+
+        ...
+
+        # Add these to your :commands
+        set commands: [
+          "enable": "rel/commands/enable"
+          "disable": "rel/commands/disable"
+        ]
+
+      end
+
+  Once available, you will be able to call them directly, such as
+
+      ./bin/<appname> enable <flag>
+      ./bin/<appname> disable <flag>
+
+  You will need to commit these files to you project.  If you edit them, please let
+  me (aforward@gmail.com) as the changes might be relevant to others.
+
+
+  ### mix version.bin.db
+
+  This will add helper scripts to `bin/db` for backing up and restoring your database.  Very opinionated, and only works for postgres.
+
+  To install these scripts into your project, run
+
+      mix version.bin.db
+
+  This will create the following files:
+
+      ./bin/db/backup     # Backup your database
+      ./bin/db/restore    # Restore your database
+
+  You will need to commit these files to you project.  If you edit them, please let
+  me (aforward@gmail.com) as the changes might be relevant to others.
 
   """
 

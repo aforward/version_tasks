@@ -16,6 +16,7 @@ defmodule Mix.Tasks.Version do
     # and paste here
 
     Shell.info "mix version.bin.db      # Create 'bin/db' helper scripts for managing database backups"
+    Shell.info "mix version.bin.ff      # Add a FeatureFlags (FF) GenServer with release helper scripts to enable/disable them"
     Shell.info "mix version.bin.release # Initialize and create some 'bin' helper scripts for managing releases"
     Shell.info "mix version.current     # Calculate the current version"
     Shell.info "mix version.inc         # Inc to the next (major|minor|patch) version of your project"
