@@ -59,8 +59,8 @@ defmodule Mix.Tasks.Version.Bin.Db do
        end)
 
     IO.puts "Installed the following scripts into ./bin/db"
-    IO.puts "   + backup     \# Backup your database (named #{appname}"
-    IO.puts "   + restore    \# Restore your database (named #{appname}"
+    IO.puts "   + backup     \# Backup your database (named #{appname})"
+    IO.puts "   + restore    \# Restore your database (named #{appname})"
     IO.puts ""
 
   end
