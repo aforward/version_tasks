@@ -301,16 +301,15 @@ defmodule VersionTasks do
 
   To install these scripts into your project, run
 
-      mix version.bin.db
+      mix version.bin.db <backup_root> <dbname>
 
-  This will create the following files:
+  The default backup_root will be `<appname>backup` and your `dbname` will be
+  your `<appname>`.  Overwrite at your leisure.
+
+  The script will create the following files:
 
       ./bin/db/backup     # Backup your database
       ./bin/db/restore    # Restore your database
-
-  You will need to commit these files to you project.  If you edit them, please let
-  me (aforward@gmail.com) as the changes might be relevant to others.
-
   """
 
   def version(), do: unquote(Mix.Project.config[:version])

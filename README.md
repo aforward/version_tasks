@@ -316,9 +316,12 @@ This will add helper scripts to `bin/db` for backing up and restoring your datab
 
 To install these scripts into your project, run
 
-    mix version.bin.db
+    mix version.bin.db <backup_root> <dbname>
 
-This will create the following files:
+The default backup_root will be `<appname>backup` and your `dbname` will be
+your `<appname>`.  Overwrite at your leisure.
+
+The script will create the following files:
 
     ./bin/db/backup     # Backup your database
     ./bin/db/restore    # Restore your database
