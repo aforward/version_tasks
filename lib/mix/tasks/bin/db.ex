@@ -28,7 +28,7 @@ defmodule Mix.Tasks.Version.Bin.Db do
     FNAME=${DBNAME}_${VERSION}_${NOW}
 
     (cd ${BACKUP_ROOT} && \\
-     pg_dump --clean ${DBNAME} > ${FNAME}.sql && \\
+     pg_dump --create --clean ${DBNAME} > ${FNAME}.sql && \\
      tar zcf ${FNAME}.tar.gz ${FNAME}.sql && \\
      ln -sf ${FNAME}.tar.gz ${DBNAME}_${VERSION}.tar.gz && \\
      ln -sf ${FNAME}.tar.gz ${DBNAME}.tar.gz && \\
