@@ -123,6 +123,21 @@ message, this delegates to git and simply calls (`git log --format=%B -n 1 HEAD`
     v1.4.5
 
 
+#### mix version.(major|minor|patch)
+
+You can also expose just the major number, or minor number or patch number.
+This would be useful for scriping where you wanted to join the numbers with
+a dash, and your `bash` is not up to the par, so you call it out individually.
+
+    # Let's assume `mix version.current` is 1.2.3
+    mix version.major
+    1
+
+    mix version.minor
+    2
+
+    mix version.patch
+    3
 
 ### Local Editing Tasks
 
