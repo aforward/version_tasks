@@ -15,7 +15,7 @@ defmodule Mix.Tasks.Version.Name do
     |> name
   end
 
-  defp name([_, "0", _]), do: :major
+  defp name([_, "0", "0"]), do: :major
   defp name([_, _, "0"]), do: :minor
   defp name(_), do: :patch
 
