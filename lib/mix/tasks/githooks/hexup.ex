@@ -14,8 +14,8 @@ if [ "$(MIX_QUIET=true mix version.is_release)" != "" ]; then
   mix test && \
     mix version.tag && \
     mix hex.publish <<EOF
-#{passphrase}
 Y
+#{passphrase}
 EOF
 else
   echo "Continue making the app awesome."
