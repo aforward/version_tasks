@@ -199,6 +199,25 @@ defmodule VersionTasks do
 
   Your passphrase should be different then your hex.pm password.
 
+  ## Custom Deploy.
+
+  You can configure an automatic deploy (as defined in a script
+  `./bin/deploy` using a git post-commit hook.  To install it, run
+
+      mix githooks.deploy
+
+  This will install a `.git/hooks/post-commit` hook that when a new
+  version is detected will run a `./bin/deploy` script. You can specify
+  your own script by running
+
+      mix githooks.deploy bin/customdeploy
+
+  If the deploy file does not exist, then we will create one for you,
+  but it won't do much, basically just
+
+      mix test && \
+        mix version.tag
+
   ## Release Helper Functions
 
   ### mix version.bin.release
