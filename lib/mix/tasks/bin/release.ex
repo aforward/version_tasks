@@ -37,8 +37,8 @@ defmodule Mix.Tasks.Version.Bin.Release do
       https://github.com/bitwalker/exrm/issues/206
       \"""
       def clear_cache do
-        Phoenix.Config.clear_cache #{module_name}.Web.Endpoint
-        Phoenix.Endpoint.Supervisor.warmup #{module_name}.Web.Endpoint
+        Phoenix.Config.clear_cache #{module_name}Web.Endpoint
+        Phoenix.Endpoint.Supervisor.warmup #{module_name}Web.Endpoint
       end
 
       @doc\"""
