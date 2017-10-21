@@ -11,8 +11,8 @@ if [ "$(MIX_QUIET=true mix version.is_release)" != "" ]; then
   echo "================="
   echo "HEX PUBLISH $VERSION"
   echo "================="
-  mix test && \
-    mix version.tag && \
+  mix test && \\
+    mix version.tag && \\
     mix hex.publish <<EOF
 Y
 #{passphrase}
