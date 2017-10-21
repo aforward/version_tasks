@@ -26,8 +26,8 @@ VERSION=$(MIX_QUIET=1 mix version.current)
 echo "================="
 echo "DEPLOYING $VERSION"
 echo "Based on script in #{deploy_filename}"
-echo "By default it does nothing but runs your tests
-echo "and tags your release.  So please update with
+echo "By default it does nothing but runs your tests"
+echo "and tags your release.  So please update with"
 echo "what you need to do"
 echo "================="
 mix test && \\
