@@ -25,6 +25,7 @@ defmodule Mix.Tasks.Version do
     Shell.info "mix version.name        # Return the name (major|minor|patch) of this version"
     Shell.info "mix version.next        # The next version (e.g v0.9.2)"
     Shell.info "mix version.tag         # Git tag your project (e.g. v1.2.3)"
+    Shell.info "mix version.untag       # Remove the git tag from your repo (e.g. v1.2.3)"
     Shell.info "mix version.up          # Inc to next version, and commit changes to git"
     Shell.info "mix githooks.hexup      # Install a githook to run mix hex.publish on a new release"
     Shell.info "mix githooks.deploy     # Install a githook to run ./bin/deploy on a new release"

@@ -161,6 +161,15 @@ defmodule VersionTasks do
 
   This will tag your repo with `vMajor.Minor.Patch` and push the tag to your remote branch.
 
+  ### mix version.untag
+
+  Undoes the effects of a mix version.tag
+
+      mix version.untag
+
+  This will remove the tag in your repo with `vMajor.Minor.Patch` and push the delete to the remote branch as well.
+
+
   ## Publishing To Hex
 
   Before you can use this task, you need to ensure you have registered with hex directly, you
