@@ -4,16 +4,16 @@ defmodule Mix.Tasks.Version.Bin.Db do
   @shortdoc "Create 'rel/commands' helper scripts for managing database backup / restore"
   def run([]), do: run([nil, nil])
   def run([backup_root]), do: run([backup_root, nil])
-  def run([backup_root, dbname]) do
 
+  def run([backup_root, dbname]) do
     [
-      "./rel/commands",
+      "./rel/commands"
     ]
     |> Enum.each(fn dirname ->
-         :ok = dirname |> Path.expand |> File.mkdir_p!
-       end)
+      :ok = dirname |> Path.expand() |> File.mkdir_p!()
+    end)
 
-    appname = Mix.Project.config[:app]
+    appname = Mix.Project.config()[:app]
     default_root = "/src/#{appname}backup"
     backup_root = backup_root || default_root
     dbname = dbname || appname
@@ -49,25 +49,25 @@ defmodule Mix.Tasks.Version.Bin.Db do
     """
     |> write!("./rel/commands/restore")
 
-
     [
       "./rel/commands/backup",
-      "./rel/commands/restore",
+      "./rel/commands/restore"
     ]
     |> Enum.each(fn filename ->
-         :ok = filename
-               |> Path.expand
-               |> File.chmod(0o755)
-       end)
+      :ok =
+        filename
+        |> Path.expand()
+        |> File.chmod(0o755)
+    end)
 
-    IO.puts "Installed the following scripts into ./rel/commands"
-    IO.puts "   + backup     \# Backup your database (named #{appname})"
-    IO.puts "   + restore    \# Restore your database (named #{appname})"
-    IO.puts ""
+    IO.puts("Installed the following scripts into ./rel/commands")
+    IO.puts("   + backup     \# Backup your database (named #{appname})")
+    IO.puts("   + restore    \# Restore your database (named #{appname})")
+    IO.puts("")
 
-    IO.puts "To enable those to be part of the release,"
-    IO.puts "then ensure you update your ./rel/config.exs with:"
-    IO.puts ""
+    IO.puts("To enable those to be part of the release,")
+    IO.puts("then ensure you update your ./rel/config.exs with:")
+    IO.puts("")
 
     example = """
     release :#{appname} do
@@ -79,13 +79,11 @@ defmodule Mix.Tasks.Version.Bin.Db do
     end
     """
 
-    IO.puts example
-    IO.puts ""
-
+    IO.puts(example)
+    IO.puts("")
   end
 
   defp write!(content, relative_name) do
-    File.write!(relative_name |> Path.expand, content)
+    File.write!(relative_name |> Path.expand(), content)
   end
-
 end

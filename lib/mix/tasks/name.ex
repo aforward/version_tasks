@@ -5,10 +5,11 @@ defmodule Mix.Tasks.Version.Name do
 
   @shortdoc "Return the name (major|minor|patch) of this version"
   def run(_) do
-    calc() |> IO.puts
+    calc() |> IO.puts()
   end
 
-  def calc(), do: calc(Current.calc)
+  def calc(), do: calc(Current.calc())
+
   def calc(version) do
     version
     |> String.split(".")
@@ -18,5 +19,4 @@ defmodule Mix.Tasks.Version.Name do
   defp name([_, "0", "0"]), do: :major
   defp name([_, _, "0"]), do: :minor
   defp name(_), do: :patch
-
 end

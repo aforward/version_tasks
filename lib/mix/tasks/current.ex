@@ -6,14 +6,14 @@ defmodule Mix.Tasks.Version.Current do
   def run(args) do
     args
     |> calc
-    |> IO.puts
+    |> IO.puts()
   end
 
   @shortdoc "Calculate the current version"
   def calc(_ \\ nil) do
     "mix.exs"
-    |> File.read
-    |> invoke(fn ({:ok, content}) -> content end)
+    |> File.read()
+    |> invoke(fn {:ok, content} -> content end)
     |> String.split("\n")
     |> Enum.map(&find_version/1)
     |> Enum.reject(&is_nil/1)
@@ -44,5 +44,4 @@ defmodule Mix.Tasks.Version.Current do
       :error -> nil
     end
   end
-
 end

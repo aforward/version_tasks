@@ -7,12 +7,13 @@ defmodule Mix.Tasks.Version.Next do
   def run(args) do
     args
     |> calc
-    |> IO.puts
+    |> IO.puts()
   end
 
   def calc([]), do: calc(["patch"])
+
   def calc([mode]) do
-    Current.calc
+    Current.calc()
     |> String.split(".")
     |> uptick(mode)
   end
@@ -31,5 +32,4 @@ defmodule Mix.Tasks.Version.Next do
     {new_val, ""} = Integer.parse(major)
     "#{new_val + 1}.0.0"
   end
-
 end

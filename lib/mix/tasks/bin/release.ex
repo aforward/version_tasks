@@ -3,8 +3,8 @@ defmodule Mix.Tasks.Version.Bin.Release do
 
   @shortdoc "Initialize and create some 'bin' helper scripts for managing releases"
   def run([]), do: run([nil])
-  def run([release_root]) do
 
+  def run([release_root]) do
     unless File.exists?("./rel/config.exs") do
       Mix.Task.run("release.init", [])
     end
@@ -12,17 +12,16 @@ defmodule Mix.Tasks.Version.Bin.Release do
     [
       "./bin/run",
       "./bin/package",
-      "./rel/commands",
+      "./rel/commands"
     ]
     |> Enum.each(fn dirname ->
-         :ok = dirname |> Path.expand |> File.mkdir_p!
-       end)
+      :ok = dirname |> Path.expand() |> File.mkdir_p!()
+    end)
 
-    appname = Mix.Project.config[:app]
+    appname = Mix.Project.config()[:app]
     default_root = "/src/#{appname}rel"
     release_root = release_root || default_root
-    module_name = appname |> Atom.to_string |> Macro.camelize
-
+    module_name = appname |> Atom.to_string() |> Macro.camelize()
 
     """
     defmodule #{module_name}.ReleaseTasks do
@@ -87,7 +86,6 @@ defmodule Mix.Tasks.Version.Bin.Release do
     """
     |> write!("./lib/#{appname}/release_tasks.ex")
 
-
     """
     #!/bin/bash
     mix deps.unlock --all && \\
@@ -103,7 +101,6 @@ defmodule Mix.Tasks.Version.Bin.Release do
     mix release --upgrade
     """
     |> write!("./bin/package/release")
-
 
     """
     #!/bin/bash
@@ -129,7 +126,6 @@ defmodule Mix.Tasks.Version.Bin.Release do
     """
     |> write!("./bin/package/retain")
 
-
     """
     #!/bin/bash
 
@@ -140,7 +136,6 @@ defmodule Mix.Tasks.Version.Bin.Release do
     #{release_root}/bin/#{appname} $@
     """
     |> write!("./bin/run/rel")
-
 
     """
     #!/bin/bash
@@ -175,7 +170,6 @@ defmodule Mix.Tasks.Version.Bin.Release do
     """
     |> write!("./bin/run/debug")
 
-
     [
       "./bin/package/prerelease",
       "./bin/package/release",
@@ -184,19 +178,20 @@ defmodule Mix.Tasks.Version.Bin.Release do
       "./bin/run/launch",
       "./bin/run/debug",
       "./rel/commands/clear_cache",
-      "./rel/commands/migrate",
+      "./rel/commands/migrate"
     ]
     |> Enum.each(fn filename ->
-         :ok = filename
-               |> Path.expand
-               |> File.chmod(0o755)
-       end)
+      :ok =
+        filename
+        |> Path.expand()
+        |> File.chmod(0o755)
+    end)
 
-    IO.puts "Installed several release scripts into ./bin/run and ./bin/package"
-    IO.puts "To enable ./rel/commands/clear_cache and ./rel/commands/migrate to be"
-    IO.puts "part of the release, then ensure you update your ./rel/config.exs with:"
-    IO.puts ""
-    IO.puts ""
+    IO.puts("Installed several release scripts into ./bin/run and ./bin/package")
+    IO.puts("To enable ./rel/commands/clear_cache and ./rel/commands/migrate to be")
+    IO.puts("part of the release, then ensure you update your ./rel/config.exs with:")
+    IO.puts("")
+    IO.puts("")
 
     example = """
     release :#{appname} do
@@ -208,13 +203,11 @@ defmodule Mix.Tasks.Version.Bin.Release do
     end
     """
 
-    IO.puts example
-    IO.puts ""
-
+    IO.puts(example)
+    IO.puts("")
   end
 
   defp write!(content, relative_name) do
-    File.write!(relative_name |> Path.expand, content)
+    File.write!(relative_name |> Path.expand(), content)
   end
-
 end

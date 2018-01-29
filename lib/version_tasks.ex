@@ -1,6 +1,5 @@
 defmodule VersionTasks do
-
-  @moduledoc"""
+  @moduledoc """
   A set of Mix Tasks for managing your version numbers.  This is best used
   in conjunction with your release strategy, and so we also provide some
   opionated generated code / bash scripts to support you in your quest for
@@ -356,7 +355,6 @@ defmodule VersionTasks do
       ./bin/db/restore    # Restore your database
   """
 
-  def version(), do: unquote(Mix.Project.config[:version])
-  def elixir_version(), do: unquote(System.version)
-
+  def version(), do: unquote(Mix.Project.config()[:version])
+  def elixir_version(), do: unquote(System.version())
 end

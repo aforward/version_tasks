@@ -8,30 +8,28 @@ defmodule Mix.Tasks.Version.Inc do
     current = Version.Current.calc(mode)
     next = Version.Next.calc(mode)
 
-    IO.puts "Updating mix.exs from #{current} to #{next}"
+    IO.puts("Updating mix.exs from #{current} to #{next}")
 
     update_file("mix.exs", current, next, &update_mix_version/3)
     update_file("README.md", current, next, &update_readme_version/3)
     next
   end
 
-
   defp update_file(filename, current, next, update_fn) do
-
     if File.exists?(filename) do
-      IO.puts "  -- Updating #{filename}"
+      IO.puts("  -- Updating #{filename}")
+
       filename
-      |> File.read
-      |> invoke(fn ({:ok, content}) -> content end)
+      |> File.read()
+      |> invoke(fn {:ok, content} -> content end)
       |> String.split("\n")
       |> Enum.map(fn line -> update_fn.(line, current, next) end)
       |> Enum.join("\n")
       |> invoke(fn content -> File.write!(filename, content) end)
     else
-      IO.puts "  -- Skipping missing file #{filename}"
+      IO.puts("  -- Skipping missing file #{filename}")
     end
   end
-
 
   defp update_mix_version(line, current, next) do
     line
@@ -43,5 +41,4 @@ defmodule Mix.Tasks.Version.Inc do
     line
     |> String.replace("~> #{current}", "~> #{next}")
   end
-
 end

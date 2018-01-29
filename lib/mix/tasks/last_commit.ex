@@ -6,16 +6,15 @@ defmodule Mix.Tasks.Version.LastCommit do
   def run(args) do
     args
     |> calc
-    |> IO.puts
+    |> IO.puts()
   end
 
   @shortdoc "Calculate the last git commit message"
   def calc(_ \\ nil) do
     "."
-    |> Git.new
+    |> Git.new()
     |> Git.log(["--format=%B", "-n 1", "HEAD"])
     |> invoke(fn {:ok, output} -> output end)
-    |> String.trim
+    |> String.trim()
   end
-
 end

@@ -5,10 +5,11 @@ defmodule Mix.Tasks.Version.Patch do
 
   @shortdoc "Return patch number (so return '3' for version '1.2.3'"
   def run(_) do
-    calc() |> IO.puts
+    calc() |> IO.puts()
   end
 
-  def calc(), do: calc(Current.calc)
+  def calc(), do: calc(Current.calc())
+
   def calc(version) do
     version
     |> String.split(".")
@@ -17,5 +18,4 @@ defmodule Mix.Tasks.Version.Patch do
 
   defp name([_, _, patch]), do: patch
   defp name(_), do: ""
-
 end

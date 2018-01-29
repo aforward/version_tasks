@@ -1,13 +1,15 @@
 defmodule VersionTasks.Shell do
-
   def info(raw_msg, args \\ %{}) do
     case parse(raw_msg, args) do
-      {:quiet, msg} -> msg
-      {:ok, msg} -> if has_mix?() do
-                      Mix.shell.info(msg)
-                    else
-                      IO.puts(msg)
-                    end
+      {:quiet, msg} ->
+        msg
+
+      {:ok, msg} ->
+        if has_mix?() do
+          Mix.shell().info(msg)
+        else
+          IO.puts(msg)
+        end
     end
   end
 
@@ -19,32 +21,39 @@ defmodule VersionTasks.Shell do
 
   def error(raw_msg, args \\ %{}) do
     case parse(raw_msg, args) do
-      {:quiet, msg} -> msg
-      {:ok, msg} -> if has_mix?() do
-                      Mix.shell.error(msg)
-                    else
-                      IO.puts(msg)
-                    end
+      {:quiet, msg} ->
+        msg
+
+      {:ok, msg} ->
+        if has_mix?() do
+          Mix.shell().error(msg)
+        else
+          IO.puts(msg)
+        end
     end
   end
 
   def raise(raw_msg, args \\ %{}) do
     case parse(raw_msg, args) do
-      {:quiet, msg} -> msg
-      {:ok, msg} -> if has_mix?() do
-                      Mix.raise(msg)
-                    else
-                      Kernel.raise(msg)
-                    end
+      {:quiet, msg} ->
+        msg
+
+      {:ok, msg} ->
+        if has_mix?() do
+          Mix.raise(msg)
+        else
+          Kernel.raise(msg)
+        end
     end
   end
 
-  def newline, do: info ""
+  def newline, do: info("")
 
   defp has_mix?, do: function_exported?(Mix, :shell, 1)
 
   defp parse(msg, args), do: _parse(msg |> clean, args)
   defp _parse(msg, %{quiet: true}), do: {:quiet, msg}
+
   defp _parse(msg, args) when is_list(args) do
     if Enum.member?(args, "--quiet") do
       {:quiet, msg}
@@ -52,8 +61,8 @@ defmodule VersionTasks.Shell do
       {:ok, msg}
     end
   end
+
   defp _parse(msg, _), do: {:ok, msg}
   defp clean(msg) when is_binary(msg), do: msg
   defp clean(msg), do: "#{msg}"
-
 end

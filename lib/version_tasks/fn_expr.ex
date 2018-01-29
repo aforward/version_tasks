@@ -1,6 +1,5 @@
 defmodule VersionTasks.FnExpr do
-
-  @moduledoc"""
+  @moduledoc """
 
   THIS IS A DUPLICATE OF https://hex.pm/packages/fn_expr so that
   project can leverage this version management (avoiding) a circular
@@ -16,9 +15,17 @@ defmodule VersionTasks.FnExpr do
     quote do
       defmacro invoke(piped_in_argument, expr) do
         fun = is_tuple(expr) && elem(expr, 0)
+
         case fun do
-          :fn -> quote do (unquote(expr)).(unquote(piped_in_argument)) end
-          _ -> quote do (&(unquote(expr))).(unquote(piped_in_argument)) end
+          :fn ->
+            quote do
+              unquote(expr).(unquote(piped_in_argument))
+            end
+
+          _ ->
+            quote do
+              (&unquote(expr)).(unquote(piped_in_argument))
+            end
         end
       end
     end
@@ -33,8 +40,7 @@ defmodule VersionTasks.FnExpr do
 
   defmacro unquote(:&&)(piped_in_argument, expr) do
     quote do
-      (&(unquote(expr))).(unquote(piped_in_argument))
+      (&unquote(expr)).(unquote(piped_in_argument))
     end
   end
-
 end

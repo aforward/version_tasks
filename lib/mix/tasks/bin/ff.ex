@@ -3,17 +3,15 @@ defmodule Mix.Tasks.Version.Bin.Ff do
 
   @shortdoc "Add a FeatureFlags (FF) GenServer with release helper scripts to enable/disable them"
   def run(_) do
-
     [
-      "./rel/commands",
+      "./rel/commands"
     ]
     |> Enum.each(fn dirname ->
-         :ok = dirname |> Path.expand |> File.mkdir_p!
-       end)
+      :ok = dirname |> Path.expand() |> File.mkdir_p!()
+    end)
 
-    appname = Mix.Project.config[:app]
-    module_name = appname |> Atom.to_string |> Macro.camelize
-
+    appname = Mix.Project.config()[:app]
+    module_name = appname |> Atom.to_string() |> Macro.camelize()
 
     """
     defmodule #{module_name}.FeatureFlags do
@@ -90,7 +88,6 @@ defmodule Mix.Tasks.Version.Bin.Ff do
     """
     |> write!("./lib/#{appname}/feature_flags.ex")
 
-
     """
     #!/bin/bash
     bin/#{appname} rpc Elixir.#{module_name}.FeatureFlags enable "$1"
@@ -103,22 +100,22 @@ defmodule Mix.Tasks.Version.Bin.Ff do
     """
     |> write!("./rel/commands/disable")
 
-
     [
       "./rel/commands/enable",
-      "./rel/commands/disable",
+      "./rel/commands/disable"
     ]
     |> Enum.each(fn filename ->
-         :ok = filename
-               |> Path.expand
-               |> File.chmod(0o755)
-       end)
+      :ok =
+        filename
+        |> Path.expand()
+        |> File.chmod(0o755)
+    end)
 
-    IO.puts "Installed several release scripts into ./bin/run and ./bin/package"
-    IO.puts "To enable ./rel/commands/enable and ./rel/commands/disable to be"
-    IO.puts "part of the release, then ensure you update your ./rel/config.exs with:"
-    IO.puts ""
-    IO.puts ""
+    IO.puts("Installed several release scripts into ./bin/run and ./bin/package")
+    IO.puts("To enable ./rel/commands/enable and ./rel/commands/disable to be")
+    IO.puts("part of the release, then ensure you update your ./rel/config.exs with:")
+    IO.puts("")
+    IO.puts("")
 
     example = """
     release :#{appname} do
@@ -130,19 +127,17 @@ defmodule Mix.Tasks.Version.Bin.Ff do
     end
     """
 
-    IO.puts example
-    IO.puts ""
-    IO.puts "To enable a feature flag 'brb' (for example) you would run the following:"
-    IO.puts "    ./bin/#{appname} enable brb"
-    IO.puts ""
-    IO.puts "To later disable that flag you would run the following:"
-    IO.puts "    ./bin/#{appname} disable brb"
-    IO.puts ""
-
+    IO.puts(example)
+    IO.puts("")
+    IO.puts("To enable a feature flag 'brb' (for example) you would run the following:")
+    IO.puts("    ./bin/#{appname} enable brb")
+    IO.puts("")
+    IO.puts("To later disable that flag you would run the following:")
+    IO.puts("    ./bin/#{appname} disable brb")
+    IO.puts("")
   end
 
   defp write!(content, relative_name) do
-    File.write!(relative_name |> Path.expand, content)
+    File.write!(relative_name |> Path.expand(), content)
   end
-
 end

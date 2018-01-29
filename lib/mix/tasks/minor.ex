@@ -5,10 +5,11 @@ defmodule Mix.Tasks.Version.Minor do
 
   @shortdoc "Return minor number (so return '2' for version '1.2.3'"
   def run(_) do
-    calc() |> IO.puts
+    calc() |> IO.puts()
   end
 
-  def calc(), do: calc(Current.calc)
+  def calc(), do: calc(Current.calc())
+
   def calc(version) do
     version
     |> String.split(".")
@@ -17,5 +18,4 @@ defmodule Mix.Tasks.Version.Minor do
 
   defp name([_, minor, _]), do: minor
   defp name(_), do: ""
-
 end

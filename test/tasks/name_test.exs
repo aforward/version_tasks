@@ -12,6 +12,5 @@ defmodule Mix.Tasks.Version.NameTest do
 
     assert :major == Name.calc("1.0.0")
     assert :major == Name.calc("2.0.0")
-
   end
 end
