@@ -195,6 +195,12 @@ can do this from the command line with
 
     mix hex.user register
 
+If you already have an account, but you haven't authenticated yourself on this device,
+then you can run
+
+    mix hex.user auth
+
+Once you have an account, and are authorized, a upgrade script can look like.
 Here's a script to upgrade your package on hex
 
     mix do version.up <major|minor|patch>, version.tag && \
