@@ -104,10 +104,10 @@ defmodule Mix.Tasks.Version.Bin.Db do
     #!/bin/bash
 
     DBNAME=#{dbname}
-    BACKUP_ROOT=#{backup_root}
+    BACKUP_ROOT=${BACKUP_ROOT-#{backup_root}}
 
     (cd ${BACKUP_ROOT} && \\
-     psql -f $(tar zxfv ${DBNAME}.tar.gz))
+     psql -f $(tar zxfv ${DBNAME}.tar.gz 2>&1 | awk '{print $NF}'))
     """
     |> write!("./rel/commands/restore")
 
