@@ -3,6 +3,50 @@ defmodule Mix.Tasks.Version do
 
   alias VersionTasks.Shell
 
+  @moduledoc """
+  version_tasks #{VersionTasks.version()}
+
+  version_tasks is a set of helper mix tasks to manange your projects version
+
+  Available version tasks:
+
+  Tasks related to generating scripts (and elixir code) to help manage your app.
+      mix version.bin.db
+      mix version.bin.ff
+      mix version.bin.release
+
+  Tasks related to managing the version of your library / component / system.
+      mix version.current
+      mix version.inc
+      mix version.is_release
+      mix version.last_commit
+      mix version.name
+      mix version.next
+
+  Tasks related to GIT operations
+      mix version.tag
+      mix version.untag
+      mix version.up
+
+  Tasks related to GIT hooks
+      mix githooks.hexup
+      mix githooks.deploy
+
+  For more details, you can run
+
+      mix help <taskname>
+
+  For example,
+
+      mix help version.bin.db
+
+  Further information can be found here:
+
+    * https://hex.pm/packages/version_tasks
+    * https://github.com/aforward/version_tasks
+
+  """
+
   @shortdoc "Learn more about the available version tasks"
   def run(_) do
     Shell.info("version_tasks v" <> VersionTasks.version())
