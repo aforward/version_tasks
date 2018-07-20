@@ -104,7 +104,17 @@ defmodule Mix.Tasks.Version.Bin.Db do
     #!/bin/bash
 
     DBNAME=#{dbname}
-    BACKUP_ROOT=${BACKUP_ROOT-#{backup_root}}
+
+    if [ -z "$BACKUP_ROOT" ]
+    then
+      if [ -d "#{backup_root}" ]; then
+        BACKUP_ROOT=#{backup_root}
+      else
+        BACKUP_ROOT=../#{appname}backup
+      fi
+    else
+      BACKUP_ROOT=${BACKUP_ROOT}
+    fi
 
     (cd ${BACKUP_ROOT} && \\
      psql -f $(tar zxfv ${DBNAME}.tar.gz 2>&1 | awk '{print $NF}'))
