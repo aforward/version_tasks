@@ -9,7 +9,7 @@ defmodule VersionTasks.Mixfile do
   @deps [
     {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
     {:git_cli, "~> 0.2"},
-    {:ex_doc, "~> 0.18.2", only: [:dev, :test]}
+    {:ex_doc, ">= 0.0.0", only: [:dev, :test]}
   ]
 
   @package [
