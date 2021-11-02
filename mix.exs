@@ -14,10 +14,22 @@ defmodule VersionTasks.Mixfile do
 
   @package [
     name: @app,
+    description: "A suite of mix tasks for managing your libs version numbers with git and hex",
     files: ["lib", "mix.exs", "README*", "README*", "LICENSE*"],
     maintainers: ["Andrew Forward"],
     licenses: ["MIT"],
     links: %{"GitHub" => @git_url}
+  ]
+
+  @docs [
+    extras: [
+      "README.md": [title: "Overview"]
+    ],
+    main: "readme",
+    homepage_url: @home_url,
+    source_url: @git_url,
+    source_ref: "v#{@version}",
+    formatters: ["html"]
   ]
 
   # ------------------------------------------------------------
@@ -30,14 +42,11 @@ defmodule VersionTasks.Mixfile do
       version: @version,
       elixir: "~> 1.11",
       name: "VersionTasks",
-      description: "A suite of mix tasks for managing your libs version numbers with git and hex",
-      package: @package,
-      source_url: @git_url,
-      homepage_url: @home_url,
-      docs: [main: "VersionTasks", extras: ["README.md"]],
       build_embedded: in_production,
       start_permanent: in_production,
-      deps: @deps
+      package: @package,
+      deps: @deps,
+      docs: @docs
     ]
   end
 

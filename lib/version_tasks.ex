@@ -99,14 +99,14 @@ defmodule VersionTasks do
       mix version.last_commit
       Simplify the database backup, to make restore easier
 
-      # Hey, this commmit looks like a new release was commit
+      # Hey, this commit looks like a new release was commit
       mix version.last_commit
       v1.4.5
 
   ### mix version.(major|minor|patch)
 
   You can also expose just the major number, or minor number or patch number.
-  This would be useful for scriping where you wanted to join the numbers with
+  This would be useful for scripting where you wanted to join the numbers with
   a dash, and your `bash` is not up to the par, so you call it out individually.
 
       # Let's assume `mix version.current` is 1.2.3
