@@ -1,5 +1,11 @@
 # VersionTasks
 
+[![Module Version](https://img.shields.io/hexpm/v/version_tasks.svg)](https://hex.pm/packages/version_tasks)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-lightgreen.svg)](https://hexdocs.pm/version_tasks/)
+[![Total Download](https://img.shields.io/hexpm/dt/version_tasks.svg)](https://hex.pm/packages/version_tasks)
+[![License](https://img.shields.io/hexpm/l/version_tasks.svg)](https://github.com/aforward/version_tasks/blob/master/LICENSE.md)
+[![Last Updated](https://img.shields.io/github/last-commit/aforward/version_tasks.svg)](https://github.com/aforward/version_tasks/commits/master)
+
 Provides an opinionated, but rational, set of mix tools for managing
 version numbers for your Elixir project using the following scheme.
 
@@ -8,7 +14,7 @@ Major.Minor.Patch
 ```
 
 You decide what each version number means, whether it's [semantic
-versionning](http://semver.org/), [Spec-ulation from Rich Hickey](https://www.youtube.com/watch?v=oyLBGkS5ICk), or any other scheme.
+versioning](http://semver.org/), [Spec-ulation from Rich Hickey](https://www.youtube.com/watch?v=oyLBGkS5ICk), or any other scheme.
 
 ## Installation
 
@@ -118,7 +124,7 @@ message, this delegates to git and simply calls (`git log --format=%B -n 1 HEAD`
     mix version.last_commit
     Simplify the database backup, to make restore easier
 
-    # Hey, this commmit looks like a new release was commit
+    # Hey, this commit looks like a new release was commit
     mix version.last_commit
     v1.4.5
 
@@ -126,7 +132,7 @@ message, this delegates to git and simply calls (`git log --format=%B -n 1 HEAD`
 #### mix version.(major|minor|patch)
 
 You can also expose just the major number, or minor number or patch number.
-This would be useful for scriping where you wanted to join the numbers with
+This would be useful for scripting where you wanted to join the numbers with
 a dash, and your `bash` is not up to the par, so you call it out individually.
 
     # Let's assume `mix version.current` is 1.2.3
@@ -377,9 +383,12 @@ The script will create the following files:
 You will need to commit these files to you project.  If you edit them, please let
 me (aforward@gmail.com) as the changes might be relevant to others.
 
-## License
+## Copyright and License
 
-MIT License
+Copyright (c) 2017 Andrew Forward
+
+This work is free. You can redistribute it and/or modify it under the
+terms of the MIT License. See the [LICENSE.md](./LICENSE.md) file for more details.
 
 ----
 Created:  2017-07-05Z

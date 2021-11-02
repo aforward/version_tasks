@@ -10,7 +10,7 @@ defmodule Mix.Tasks.Version.Bin.Db do
     * `backup_root` -- Where to store backups
     * `dbname`      -- The name of your database
 
-  Both arugments are optional and default to
+  Both arguments are optional and default to
 
     * `backup_root` -- /src/{appname}backup
     * `dbname`      -- {appname}

@@ -6,7 +6,7 @@ defmodule Mix.Tasks.Version do
   @moduledoc """
   version_tasks #{VersionTasks.version()}
 
-  version_tasks is a set of helper mix tasks to manange your projects version
+  version_tasks is a set of helper mix tasks to manage your projects version
 
   Available version tasks:
 
@@ -50,7 +50,7 @@ defmodule Mix.Tasks.Version do
   @shortdoc "Learn more about the available version tasks"
   def run(_) do
     Shell.info("version_tasks v" <> VersionTasks.version())
-    Shell.info("version_tasks is a set of helper mix tasks to manange your projects version")
+    Shell.info("version_tasks is a set of helper mix tasks to manage your projects version")
     Shell.newline()
 
     Shell.info("Available version tasks:")
