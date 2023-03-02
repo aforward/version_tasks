@@ -28,7 +28,7 @@ defmodule VersionTasks.Mixfile do
     [
       app: @app,
       version: @version,
-      elixir: "~> 1.11",
+      elixir: "~> 1.14",
       name: "VersionTasks",
       description: "A suite of mix tasks for managing your libs version numbers with git and hex",
       package: @package,
