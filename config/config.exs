@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 #     config(:version_tasks, key: :value)
 #

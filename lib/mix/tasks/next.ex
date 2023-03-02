@@ -32,4 +32,20 @@ defmodule Mix.Tasks.Version.Next do
     {new_val, ""} = Integer.parse(major)
     "#{new_val + 1}.0.0"
   end
+
+  def uptick([major, minor, patch], "rc") do
+    {major, ""} = Integer.parse(major)
+
+    {major, patch, rc_patch} =
+      case Integer.parse(patch) do
+        {patch_val, ""} ->
+          {major + 1, patch_val, "rc0"}
+
+        {patch_val, "-rc" <> existing_rc} ->
+          {rc_val, ""} = Integer.parse(existing_rc)
+          {major, patch_val, "rc#{rc_val + 1}"}
+      end
+
+    "#{major}.#{minor}.#{patch}-#{rc_patch}"
+  end
 end
